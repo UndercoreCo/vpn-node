@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "undercore-vpn-node"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["fastapi==0.141.1", "uvicorn==0.52.4", "pydantic==2.13.5"]
+license = {file = "LICENSE"}
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "httpx>=0.28,<1"]
+
+[project.scripts]
+vpn-node = "node_agent.main:main"
+
+[tool.setuptools.packages.find]
+include = ["node_agent*"]

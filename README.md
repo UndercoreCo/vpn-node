@@ -1,20 +1,24 @@
-# VPN Node
+# VPN node
 
-VPN node agent and deployment tools for [Undercore Orchestrator](https://github.com/UndercoreCo/orchestrator).
+Independent node-side control agent for VPN transports. MIT-licensed agent code;
+upstream VPN implementations retain their own licenses.
 
-**Status: repository preparation.** The existing Undercore Amnezia-agent is being
-prepared for extraction into this project. Runtime source and an installer are
-not available here yet. There is currently no installation command to run.
+**Experimental:** the first implementation manages TrustTunnel 1.1.0. This is not
+a replacement for the installed Amnezia agent and is not a production release.
+It has no dependency on Undercore accounts, billing, website or administrative UI.
+An authenticated controller supplies an opaque external ID and an expiry time.
 
-The planned first supported stack is AmneziaWG 3.1. This project will provide
-node-side API, peer lifecycle management, and deployment/update tooling. The
-orchestrator remains responsible for selecting nodes and maintaining assignments;
-the caller's backend remains responsible for user authorization and entitlement.
+- [Architecture and API](docs/public/architecture.md)
+- [Build and run](docs/public/running.md)
 
-See the [roadmap](https://github.com/UndercoreCo/orchestrator/blob/main/docs/public/roadmap.md)
-for the extraction and provisioning stages.
+```sh
+python3 -m venv .venv
+.venv/bin/pip install '.[test]'
+.venv/bin/python -m pytest
+```
 
-## License
-
-Project-owned code and documentation use the [MIT license](LICENSE).
-External VPN engines and dependencies retain their own licenses.
+`node_agent/` owns validation, durable desired state and the HTTP API.
+`runtime/managed.rs` implements a small authorization/session bridge for the
+pinned official TrustTunnel endpoint. `scripts/prepare_runtime.py` applies it only
+to a clean checkout of that exact revision. No client credentials or deployment
+secrets belong in this repository.
